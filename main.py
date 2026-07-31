@@ -27,7 +27,7 @@ from keras.preprocessing.sequence import pad_sequences
 # 1. CONFIGURATION & CONSTANTS
 # ---------------------------------------------------------------------------
 
-MODEL_PATH = "Artifacts/BiGRU_Modle.h5"
+MODEL_PATH = "Artifacts/BiGRU_Modle.keras"
 TOKENIZER_PATH = "Artifacts/tokenizer.pkl"
 
 # The sequence length expected by the model during training
@@ -102,21 +102,11 @@ class HealthResponse(BaseModel):
 ml_models = {}
 
 
-from keras.layers import Embedding
-
-class SafeEmbedding(Embedding):
-    """Custom Embedding class that strips quantization_config for cross-version compatibility."""
-    @classmethod
-    def from_config(cls, config):
-        config.pop("quantization_config", None)
-        return super().from_config(config)
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Loads the model and tokenizer once when the server starts up."""
     print("Loading model and tokenizer...")
-    ml_models["model"] = load_model(MODEL_PATH, custom_objects={"Embedding": SafeEmbedding})
+    ml_models["model"] = load_model(MODEL_PATH)
     with open(TOKENIZER_PATH, "rb") as f:
         ml_models["tokenizer"] = pickle.load(f)
     print("Model and tokenizer loaded successfully!")
