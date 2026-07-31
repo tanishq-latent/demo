@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Emotion Classifier</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🎭 Emotion Classifier</h1>
+    <p>Type a sentence and let the BiGRU model guess how it feels.</p>
+  </header>
+
+  <div class="card">
+    <textarea id="textInput" maxlength="2000" placeholder="e.g. I can't believe I finally finished the marathon!"></textarea>
+    <div class="row">
+      <span class="char-count"><span id="charCount">0</span>/2000</span>
+      <button id="analyzeBtn">Analyze Emotion</button>
+    </div>
+
+    <div class="examples" id="examples">
+      <span class="example-chip">I feel so happy and full of joy today!</span>
+      <span class="example-chip">I am feeling so sad and hopeless.</span>
+      <span class="example-chip">I am so angry and furious right now!</span>
+      <span class="example-chip">I feel scared and terrified of the dark.</span>
+      <span class="example-chip">I am so surprised and amazed by this news!</span>
+    </div>
+
+    <p class="loading" id="loading">Analyzing…</p>
+    <p class="error" id="error"></p>
+
+    <div id="result">
+      <div class="top-emotion">
+        <div class="emoji" id="topEmoji">🎭</div>
+        <div>
+          <div class="label" id="topLabel">-</div>
+          <div class="confidence" id="topConfidence">-</div>
+        </div>
+      </div>
+      <div id="bars"></div>
+    </div>
+  </div>
+
+  <footer>
+    Powered by a BiGRU model &middot; <a href="/docs" target="_blank">View API docs</a>
+  </footer>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
