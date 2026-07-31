@@ -19,8 +19,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from keras.models import load_model
+from keras.preprocessing.sequence import pad_sequences
 
 
 # ---------------------------------------------------------------------------
