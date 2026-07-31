@@ -102,11 +102,44 @@ class HealthResponse(BaseModel):
 ml_models = {}
 
 
+import tempfile
+import zipfile
+import json
+import os
+
+def load_model_safely(model_path: str):
+    """
+    Safely loads a Keras model, automatically handling version compatibility
+    differences (e.g. quantization_config in Embedding layers).
+    """
+    try:
+        return load_model(model_path)
+    except Exception as e:
+        err_str = str(e)
+        if "quantization_config" in err_str or "Embedding" in err_str:
+            print("Applying Keras layer compatibility fallback...")
+            with tempfile.TemporaryDirectory() as tmpdir:
+                fixed_zip_path = os.path.join(tmpdir, "fixed_model.keras")
+                with zipfile.ZipFile(model_path, "r") as zin:
+                    with zipfile.ZipFile(fixed_zip_path, "w") as zout:
+                        for item in zin.infolist():
+                            buffer = zin.read(item.filename)
+                            if item.filename == "config.json":
+                                config = json.loads(buffer.decode("utf-8"))
+                                for layer in config.get("config", {}).get("layers", []):
+                                    if "config" in layer and "quantization_config" in layer["config"]:
+                                        del layer["config"]["quantization_config"]
+                                buffer = json.dumps(config).encode("utf-8")
+                            zout.writestr(item, buffer)
+                return load_model(fixed_zip_path)
+        raise e
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Loads the model and tokenizer once when the server starts up."""
     print("Loading model and tokenizer...")
-    ml_models["model"] = load_model(MODEL_PATH)
+    ml_models["model"] = load_model_safely(MODEL_PATH)
     with open(TOKENIZER_PATH, "rb") as f:
         ml_models["tokenizer"] = pickle.load(f)
     print("Model and tokenizer loaded successfully!")
