@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Roadmap — Emotion Intelligence System</title>
+  
+  <!-- Inter, Space Grotesk & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & VARIABLES (Apple / Vercel / Linear Aesthetic)
+       ========================================================================== */
+    :root {
+      --bg-dark: #08090a;
+      --surface-card: #111216;
+      --surface-hover: #17191e;
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --border-active: rgba(99, 102, 241, 0.35);
+
+      --text-primary: #f4f4f5;
+      --text-secondary: #8f96a3;
+      --text-muted: #525866;
+
+      --accent-indigo: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.12);
+      
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-brand: 'Space Grotesk', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --mouse-x: 50%;
+      --mouse-y: 30%;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Animated Aurora Background & Grid */
+    .bg-aurora {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+    }
+
+    /* Crisp Animated Background Grid */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-size: 50px 50px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 70%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 70%, transparent 100%);
+      animation: panGrid 25s linear infinite;
+    }
+
+    @keyframes panGrid {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 50px 50px;
+      }
+    }
+
+    /* Ambient Grid Scan Beam */
+    .grid-scan-beam {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 180px;
+      background: linear-gradient(180deg, transparent 0%, rgba(99, 102, 241, 0.05) 50%, transparent 100%);
+      pointer-events: none;
+      z-index: -1;
+      animation: scanSweep 14s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes scanSweep {
+      0% { top: -180px; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+
+    /* Floating Aurora Orbs */
+    .aurora-orb-1 {
+      position: absolute;
+      top: -10%;
+      left: 20%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.09) 0%, rgba(99, 102, 241, 0) 70%);
+      border-radius: 50%;
+      filter: blur(70px);
+      animation: floatOrb1 20s ease-in-out infinite alternate;
+    }
+
+    .aurora-orb-2 {
+      position: absolute;
+      top: 45%;
+      right: -10%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.07) 0%, rgba(56, 189, 248, 0) 70%);
+      border-radius: 50%;
+      filter: blur(90px);
+      animation: floatOrb2 25s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatOrb1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-70px, 80px) scale(1.12); }
+      100% { transform: translate(80px, -50px) scale(0.92); }
+    }
+
+    @keyframes floatOrb2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, -90px) scale(1.15); }
+      100% { transform: translate(-60px, 60px) scale(0.88); }
+    }
+
+    /* Interactive Mouse Spotlight Gradient */
+    .mouse-spotlight {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(650px circle at var(--mouse-x) var(--mouse-y), rgba(99, 102, 241, 0.07), transparent 45%);
+    }
+
+    /* Top Progress Indicator Bar */
+    #topProgressBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--text-primary);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* Container */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header & Hero Section */
+    header {
+      padding: 6rem 0 4rem;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Sleek Badge */
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.95rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      margin-bottom: 1.75rem;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .pill-badge:hover {
+      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent-indigo);
+      border-radius: 50%;
+    }
+
+    .badge-text {
+      font-family: var(--font-brand);
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+      color: #e4e4e7;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.12;
+      background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.25rem;
+    }
+
+    p.subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3.5rem;
+      margin-bottom: 2.75rem;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.2rem;
+    }
+
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.75rem;
+      background: #ffffff;
+      color: #09090b;
+      border: none;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .start-btn:hover {
+      background: #e4e4e7;
+      transform: translateY(-1px);
+    }
+
+    /* Sticky Navigation Filter Bar */
+    .sticky-nav {
+      position: sticky;
+      top: 1.25rem;
+      z-index: 90;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 3.5rem;
+      padding: 0.35rem;
+      background: rgba(13, 14, 18, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      width: max-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 0.4rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      color: #ffffff;
+    }
+
+    .nav-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    /* Timeline Section */
+    .timeline-container {
+      position: relative;
+      padding-left: 2.25rem;
+      margin-bottom: 6rem;
+    }
+
+    /* Continuous Background Line */
+    .timeline-track {
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Animated Filled Line */
+    .timeline-progress-line {
+      position: absolute;
+      left: 11px;
+      top: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--accent-indigo), rgba(255, 255, 255, 0.3));
+      height: 0%;
+      transition: height 0.1s linear;
+    }
+
+    /* Step Card Item */
+    .step-card {
+      position: relative;
+      margin-bottom: 2.25rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .step-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Milestone Marker Dot */
+    .step-marker {
+      position: absolute;
+      left: -2.25rem;
+      top: 1.6rem;
+      transform: translateX(-50%);
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 1px solid var(--text-muted);
+      transition: all 0.25s ease;
+      z-index: 2;
+    }
+
+    .step-card.active .step-marker {
+      border-color: var(--text-primary);
+      background: var(--text-primary);
+    }
+
+    /* Card Box */
+    .card-content {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.6rem 1.75rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .step-card:hover .card-content {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .step-card.active .card-content {
+      border-color: var(--border-active);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--accent-indigo);
+      background: var(--accent-glow);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-desc {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.2rem;
+      line-height: 1.55;
+    }
+
+    /* Checklist Grid */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.55rem 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.86rem;
+      color: var(--text-primary);
+    }
+
+    .check-icon {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e4e4e7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    /* Tech Tags */
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding-top: 0.95rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .tech-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* Footer Banner */
+    footer {
+      text-align: center;
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 640px) {
+      .hero-stats {
+        gap: 1.5rem;
+      }
+      .sticky-nav {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .checklist-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Background Orbs & Spotlight -->
+  <div class="bg-aurora">
+    <div class="aurora-orb-1"></div>
+    <div class="aurora-orb-2"></div>
+  </div>
+  <div class="bg-grid"></div>
+  <div class="grid-scan-beam"></div>
+  <div class="mouse-spotlight"></div>
+
+  <!-- Top Progress Bar -->
+  <div id="topProgressBar"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="pill-badge">
+        <div class="badge-dot"></div>
+        <span class="badge-text">Sheryians AI School</span>
+      </div>
+
+      <h1>Building an Emotion Intelligence System</h1>
+      <p class="subtitle">A complete 10-step journey from raw NLP text datasets to deep learning model architecture, FastAPI backend development, and production web deployment.</p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-value">10</span>
+          <span class="stat-label">Milestones</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">Full Stack</span>
+          <span class="stat-label">NLP + Web</span>
+        </div>
+      </div>
+
+      <a href="#step-1" class="start-btn">
+        Start Journey
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+      </a>
+    </header>
+
+    <!-- Filter Navigation Bar -->
+    <div class="sticky-nav">
+      <button class="nav-btn active" onclick="filterSteps('all', this)">All Steps</button>
+      <button class="nav-btn" onclick="filterSteps('data', this)">Data & EDA (1-3)</button>
+      <button class="nav-btn" onclick="filterSteps('model', this)">NLP & Deep Learning (4-6)</button>
+      <button class="nav-btn" onclick="filterSteps('app', this)">Backend & UI (7-8)</button>
+      <button class="nav-btn" onclick="filterSteps('deploy', this)">Deploy & Demo (9-10)</button>
+    </div>
+
+    <!-- Timeline Wrapper -->
+    <div class="timeline-container">
+      <div class="timeline-track"></div>
+      <div class="timeline-progress-line" id="timelineProgressLine"></div>
+
+      <!-- STEP 1 -->
+      <div class="step-card" id="step-1" data-category="data">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 01</span>
+          </div>
+          <h2 class="card-title">Understanding the Problem</h2>
+          <p class="card-desc">Define the scope, objectives, and real-world utility of automated emotion classification in customer sentiment and social analytics.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Project Overview</div>
+            <div class="check-item"><span class="check-icon">✓</span> Real-World Use Case</div>
+            <div class="check-item"><span class="check-icon">✓</span> Expected Output Definition</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">Problem Formulation</span>
+            <span class="tech-tag">Sentiment AI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card" id="step-2" data-category="data">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 02</span>
+          </div>
+          <h2 class="card-title">Dataset Loading & Structural Inspection</h2>
+          <p class="card-desc">Fetch the multi-class dataset from HuggingFace, examine schema split structure, and inspect target labels.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Load HuggingFace Dataset</div>
+            <div class="check-item"><span class="check-icon">✓</span> Explore Feature Attributes</div>
+            <div class="check-item"><span class="check-icon">✓</span> Understand 6 Target Labels</div>
+            <div class="check-item"><span class="check-icon">✓</span> Initial Train/Test Inspection</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">datasets</span>
+            <span class="tech-tag">HuggingFace</span>
+            <span class="tech-tag">dair-ai/emotion</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card" id="step-3" data-category="data">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 03</span>
+          </div>
+          <h2 class="card-title">Exploratory Data Analysis (EDA)</h2>
+          <p class="card-desc">Analyze class frequency distributions, sentence length variance, and data balance across categories.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Class Distribution Plotting</div>
+            <div class="check-item"><span class="check-icon">✓</span> Text Length Analysis</div>
+            <div class="check-item"><span class="check-icon">✓</span> Missing Value Audit</div>
+            <div class="check-item"><span class="check-icon">✓</span> Key Visualizations</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">Matplotlib</span>
+            <span class="tech-tag">Seaborn</span>
+            <span class="tech-tag">Pandas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card" id="step-4" data-category="model">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 04</span>
+          </div>
+          <h2 class="card-title">NLP Preprocessing & Sequence Padding</h2>
+          <p class="card-desc">Transform raw text into padded numerical sequence tensors suitable for recurrent deep learning models.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Text Cleaning & Normalization</div>
+            <div class="check-item"><span class="check-icon">✓</span> Tokenization (10,000 Vocab)</div>
+            <div class="check-item"><span class="check-icon">✓</span> Sequence Padding (Length: 50)</div>
+            <div class="check-item"><span class="check-icon">✓</span> Balanced Class Weighting</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">Tokenizer</span>
+            <span class="tech-tag">pad_sequences</span>
+            <span class="tech-tag">scikit-learn</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card" id="step-5" data-category="model">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 05</span>
+          </div>
+          <h2 class="card-title">Deep Learning Architecture & Training</h2>
+          <p class="card-desc">Build and compare plain Simple RNN, LSTM, and GRU models before advancing to a Stacked Bidirectional GRU with 300D embeddings.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Foundational Model Comparison</div>
+            <div class="check-item"><span class="check-icon">✓</span> Bidirectional GRU Architecture</div>
+            <div class="check-item"><span class="check-icon">✓</span> Model Training with EarlyStopping</div>
+            <div class="check-item"><span class="check-icon">✓</span> Export Model Artifacts</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">TensorFlow</span>
+            <span class="tech-tag">Keras</span>
+            <span class="tech-tag">Bidirectional GRU</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-card" id="step-6" data-category="model">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 06</span>
+          </div>
+          <h2 class="card-title">Model Evaluation & Bias Analysis</h2>
+          <p class="card-desc">Evaluate multi-class performance using raw & normalized confusion matrices, precision, recall, and per-class bias checks.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Test Loss & Accuracy Metrics</div>
+            <div class="check-item"><span class="check-icon">✓</span> Classification Report (P/R/F1)</div>
+            <div class="check-item"><span class="check-icon">✓</span> Raw & Normalized Confusion Matrix</div>
+            <div class="check-item"><span class="check-icon">✓</span> Minority Class Bias Analysis</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">classification_report</span>
+            <span class="tech-tag">confusion_matrix</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step-card" id="step-7" data-category="app">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 07</span>
+          </div>
+          <h2 class="card-title">FastAPI Backend Development</h2>
+          <p class="card-desc">Wrap the trained Keras model and tokenizer into a clean, high-performance REST API with Pydantic request validation.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Create FastAPI Application</div>
+            <div class="check-item"><span class="check-icon">✓</span> Pydantic Request/Response Models</div>
+            <div class="check-item"><span class="check-icon">✓</span> Real-time Prediction Endpoint</div>
+            <div class="check-item"><span class="check-icon">✓</span> Automated Swagger API Testing</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">FastAPI</span>
+            <span class="tech-tag">Pydantic</span>
+            <span class="tech-tag">Uvicorn</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 8 -->
+      <div class="step-card" id="step-8" data-category="app">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 08</span>
+          </div>
+          <h2 class="card-title">Modern Web Frontend Interface</h2>
+          <p class="card-desc">Design a premium dark-mode glassmorphism interface featuring sample presets, emotion badges, and confidence indicators.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Clean Responsive Interface</div>
+            <div class="check-item"><span class="check-icon">✓</span> Connect Frontend to FastAPI</div>
+            <div class="check-item"><span class="check-icon">✓</span> Display Emotion Badges</div>
+            <div class="check-item"><span class="check-icon">✓</span> Confidence Scores & Bars</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">HTML5</span>
+            <span class="tech-tag">CSS Glassmorphism</span>
+            <span class="tech-tag">Vanilla JS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 9 -->
+      <div class="step-card" id="step-9" data-category="deploy">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 09</span>
+          </div>
+          <h2 class="card-title">Production Deployment Preparation</h2>
+          <p class="card-desc">Structure project files, lock dependencies, configure CORS, and prepare the web application for production hosting.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Clean Project Directory Structure</div>
+            <div class="check-item"><span class="check-icon">✓</span> Dependencies Lock (requirements.txt)</div>
+            <div class="check-item"><span class="check-icon">✓</span> Production Uvicorn Config</div>
+            <div class="check-item"><span class="check-icon">✓</span> Live Endpoint Verification</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">Deployment</span>
+            <span class="tech-tag">CORS</span>
+            <span class="tech-tag">Production Setup</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 10 -->
+      <div class="step-card" id="step-10" data-category="deploy">
+        <div class="step-marker"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="step-number">STEP 10</span>
+          </div>
+          <h2 class="card-title">Final Product & Code Walkthrough</h2>
+          <p class="card-desc">Review the complete end-to-end architecture, perform live text inference tests, and explore the open-source repository.</p>
+          <div class="checklist-grid">
+            <div class="check-item"><span class="check-icon">✓</span> Complete System Architecture</div>
+            <div class="check-item"><span class="check-icon">✓</span> End-to-End Workflow Validation</div>
+            <div class="check-item"><span class="check-icon">✓</span> Live Interactive Demo</div>
+            <div class="check-item"><span class="check-icon">✓</span> GitHub Repository Walkthrough</div>
+          </div>
+          <div class="tag-container">
+            <span class="tech-tag">Full Stack AI</span>
+            <span class="tech-tag">GitHub</span>
+            <span class="tech-tag">Tutorial Showcase</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      Project Roadmap • Emotion Intelligence System Tutorial
+    </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // 1. Mouse Cursor Ambient Spotlight Track
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    });
+
+    // 2. Top Progress Bar & Timeline Progress Line on Scroll
+    const topProgressBar = document.getElementById('topProgressBar');
+    const timelineProgressLine = document.getElementById('timelineProgressLine');
+    const timelineContainer = document.querySelector('.timeline-container');
+
+    window.addEventListener('scroll', () => {
+      // Top Progress
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (scrollTop / docHeight) * 100;
+      topProgressBar.style.width = `${scrolled}%`;
+
+      // Timeline Progress Line Height
+      const rect = timelineContainer.getBoundingClientRect();
+      const containerTop = rect.top + window.scrollY;
+      const containerHeight = rect.height;
+      const currentScroll = window.scrollY + (window.innerHeight / 2);
+
+      let progress = ((currentScroll - containerTop) / containerHeight) * 100;
+      progress = Math.max(0, Math.min(100, progress));
+      timelineProgressLine.style.height = `${progress}%`;
+    });
+
+    // 3. Intersection Observer for Smooth Step Cards Animations & Active Highlighting
+    const stepCards = document.querySelectorAll('.step-card');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.15
+    };
+
+    const stepObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.classList.add('active');
+        } else {
+          entry.target.classList.remove('active');
+        }
+      });
+    }, observerOptions);
+
+    stepCards.forEach(card => stepObserver.observe(card));
+
+    // 4. Category Filter Navigation
+    function filterSteps(category, btnElement) {
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      stepCards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'all' || cardCat === category) {
+          card.style.display = 'block';
+          setTimeout(() => card.classList.add('visible'), 50);
+        } else {
+          card.style.display = 'none';
+          card.classList.remove('visible');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
