@@ -27,8 +27,8 @@ from keras.preprocessing.sequence import pad_sequences
 # 1. CONFIGURATION & CONSTANTS
 # ---------------------------------------------------------------------------
 
-MODEL_PATH = "Artifacts/BiGRU_Modle.keras"
-TOKENIZER_PATH = "Artifacts/tokenizer.pickle"
+MODEL_PATH = "Artifacts/BiGRU_Modle.h5"
+TOKENIZER_PATH = "Artifacts/tokenizer.pkl"
 
 # The sequence length expected by the model during training
 MAX_SEQUENCE_LENGTH = 50
