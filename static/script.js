@@ -7,7 +7,7 @@
 // Leave it as an empty string if this page is served BY the FastAPI
 // app itself (e.g. via StaticFiles) — then "/predict" already works.
 // ---------------------------------------------------------------------
-const API_BASE_URL = "";
+const API_BASE_URL = "https://demo-dmz5.onrender.com";
 
 // Emoji + color per emotion, purely cosmetic.
 const EMOTION_META = {
